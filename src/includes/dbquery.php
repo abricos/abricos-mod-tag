@@ -56,8 +56,10 @@ class TagQuery {
 
         $db->query_write($sql);
 
+        $ret = array();
         $rows = TagQuery::TagsByTags($db, $tags);
         while (($d = $db->fetch_array($rows))){
+            $ret[] = $d['tag'];
             $sql = "
                 INSERT INTO ".$db->prefix."tag_owner
                     (modname,owner,ownerid,tagid,groupid,userid)
@@ -72,6 +74,7 @@ class TagQuery {
             ";
             $db->query_write($sql);
         }
+        return $ret;
     }
 
     public static function TagsByQuery(Ab_Database $db, $module, $config){
