@@ -42,7 +42,8 @@ Component.entryPoint = function(NS){
         },
         tagListByQuery: function(query, callback){
             var config = {
-                query: query
+                query: query,
+                groupid: this.get('groupid')
             };
             this.get('appInstance').tagListByQuery(config, function(err, result){
                 var tags = [];
@@ -62,7 +63,7 @@ Component.entryPoint = function(NS){
             component: {value: COMPONENT},
             templateBlockName: {value: 'widget'},
             ownerid: {value: 0},
-            ownerType: {value: ''},
+            groupid: {value: 0},
             tags: {
                 lazyAdd: true,
                 validator: Y.Lang.isArray,

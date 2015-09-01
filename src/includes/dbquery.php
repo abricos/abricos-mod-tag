@@ -73,6 +73,29 @@ class TagQuery {
             $db->query_write($sql);
         }
     }
+
+    public static function TagsByQuery(Ab_Database $db, $module, $config){
+        $tags = Tag::TagsParse(array($config->query));
+        if (count($tags) !== 1){
+            return;
+        }
+        $query = $tags[0];
+        $sql = "
+            SELECT t.tag
+            FROM ".$db->prefix."tag_owner o
+            INNER JOIN ".$db->prefix."tag t ON o.tagid=t.tagid
+            WHERE t.tag LIKE '".bkstr($query)."%'
+                AND modname='".bkstr($module)."'
+                AND (
+                ".(isset($config->groupid) ? "o.groupid=".intval($config->groupid)." OR " : "")."
+                    o.userid=".bkint(Abricos::$user->id)."
+                )
+            GROUP BY t.tag
+            ORDER BY t.tag
+            LIMIT 10
+		";
+        return $db->query_read($sql);
+    }
 }
 
 ?>

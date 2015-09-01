@@ -69,7 +69,16 @@ class Tag {
     public function TagsSave($module, $owner, $ownerid, $tags, $groupid = 0){
         TagQuery::TagsAppendInBase($this->db, $tags);
         TagQuery::TagsSave($this->db, $module, $owner, $ownerid, $tags, $groupid);
-   }
+    }
+
+    public function TagsByQuery($module, $config){
+        $ret = [];
+        $rows = TagQuery::TagsByQuery($this->db, $module, $config);
+        while (($d = $this->db->fetch_array($rows))){
+            $ret[] = $d['tag'];
+        }
+        return $ret;
+    }
 
 }
 
