@@ -20,20 +20,25 @@ if ($updateManager->isInstall()){
 		CREATE TABLE IF NOT EXISTS ".$pfx."tag (
 			tagid integer(10) unsigned NOT NULL auto_increment COMMENT 'Tag ID',
 				
-			title varchar(100) NOT NULL DEFAULT '' COMMENT 'Title',
+			tag varchar(250) NOT NULL DEFAULT '' COMMENT 'Tag',
 				
 			PRIMARY KEY (tagid),
-			UNIQUE KEY title (title)
+			UNIQUE KEY tag (tag)
 		)".$charset
     );
 
     $db->query_write("
 		CREATE TABLE IF NOT EXISTS ".$pfx."tag_owner (
+			modname varchar(50) NOT NULL DEFAULT '' COMMENT '',
+			owner varchar(50) NOT NULL DEFAULT '' COMMENT '',
 			ownerid integer(10) unsigned NOT NULL COMMENT 'Owner ID',
 			tagid integer(10) unsigned NOT NULL COMMENT 'Tag ID',
-			module varchar(50) NOT NULL DEFAULT '' COMMENT '',
 
-			UNIQUE KEY tag (ownerid, tagid, module)
+			groupid integer(10) unsigned NOT NULL COMMENT 'Group ID',
+			userid integer(10) unsigned NOT NULL COMMENT 'User ID',
+
+			UNIQUE KEY ownertag (modname, owner, ownerid, tagid),
+			KEY grpusr (groupid,userid)
 		)".$charset
     );
 }

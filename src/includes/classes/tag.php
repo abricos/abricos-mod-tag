@@ -27,8 +27,6 @@ class Tag {
      */
     public $models;
 
-    protected $_cache = array();
-
     public function __construct(TagManager $manager){
         $this->manager = $manager;
         $this->db = $manager->db;
@@ -39,50 +37,10 @@ class Tag {
         $models->RegisterClass('TagList', 'TagItemList');
     }
 
-    public function AJAX($d){
-        switch ($d->do){
-            case "appStructure":
-                return $this->AppStructureToJSON();
-        }
-        return null;
-    }
-
-    public function ClearCache(){
-        $this->_cache = array();
-    }
-
-    private function ResultToJSON($name, $res){
-        $ret = new stdClass();
-
-        if (is_integer($res)){
-            $ret->err = $res;
-            return $ret;
-        }
-        $ret->$name = $res->ToJSON();
-
-        return $ret;
-    }
-
-    private function ImplodeJSON($jsons, $ret = null){
-        if (empty($ret)){
-            $ret = new stdClass();
-        }
-        foreach ($jsons as $json){
-            foreach ($json as $key => $value){
-                $ret->$key = $value;
-            }
-        }
-        return $ret;
-    }
-
     public function AppStructureToJSON(){
-        if (!$this->manager->IsViewRole()){
-            return 403;
-        }
+        $modelManager = AbricosModelManager::GetManager('tag');
 
-        $modelManager = AbricosModelManager::GetManager('money');
-
-        $res = $modelManager->ToJSON('Tag'        );
+        $res = $modelManager->ToJSON('Tag');
         if (empty($res)){
             return null;
         }
@@ -91,6 +49,27 @@ class Tag {
         $ret->appStructure = $res;
         return $ret;
     }
+
+    public static function TagsParse($tags){
+        if (!is_array($tags)){
+            return array();
+        }
+        $ret = array();
+        $count = min(count($tags), 16);
+        for ($i = 0; $i < $count; $i++){
+            $tag = mb_strtolower(trim($tags[$i]), 'UTF-8');
+            if (strlen($tag) === 0){
+                continue;
+            }
+            $ret[$i] = $tag;
+        }
+        return $ret;
+    }
+
+    public function TagsSave($module, $owner, $ownerid, $tags, $groupid = 0){
+        TagQuery::TagsAppendInBase($this->db, $tags);
+        TagQuery::TagsSave($this->db, $module, $owner, $ownerid, $tags, $groupid);
+   }
 
 }
 
