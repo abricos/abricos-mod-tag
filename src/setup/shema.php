@@ -37,7 +37,7 @@ if ($updateManager->isInstall()){
 			groupid integer(10) unsigned NOT NULL COMMENT 'Group ID',
 			userid integer(10) unsigned NOT NULL COMMENT 'User ID',
 
-			UNIQUE KEY ownertag (modname, owner, ownerid, tagid),
+			PRIMARY KEY (modname, owner, ownerid, tagid),
 			KEY grpusr (groupid,userid)
 		)".$charset
     );

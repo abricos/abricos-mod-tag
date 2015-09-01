@@ -47,7 +47,6 @@ class TagQuery {
     }
 
     public static function TagsSave(Ab_Database $db, $module, $owner, $ownerid, $tags, $groupid = 0){
-        print_r("module='$module'");
         $sql = "
           DELETE FROM ".$db->prefix."tag_owner
           WHERE modname='".bkstr($module)."'
@@ -60,21 +59,20 @@ class TagQuery {
         $rows = TagQuery::TagsByTags($db, $tags);
         while (($d = $db->fetch_array($rows))){
             $sql = "
-                INSERT INTO ".$db->prefix."tag_owner (modname,owner,ownerid,tagid,groupid,userid)
+                INSERT INTO ".$db->prefix."tag_owner
+                    (modname,owner,ownerid,tagid,groupid,userid)
                 VALUES (
-                    modname='".bkstr($module)."',
-                    owner='".bkstr($owner)."',
-                    ownerid=".intval($ownerid).",
-                    tagid=".intval($d['tagid']).",
-                    groupid=".intval($groupid).",
-                    userid=".intval(Abricos::$user->id)."
+                    '".bkstr($module)."',
+                    '".bkstr($owner)."',
+                    ".intval($ownerid).",
+                    ".intval($d['tagid']).",
+                    ".intval($groupid).",
+                    ".intval(Abricos::$user->id)."
                 )
             ";
             $db->query_write($sql);
         }
-
     }
-
 }
 
 ?>
