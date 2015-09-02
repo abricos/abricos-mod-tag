@@ -18,7 +18,7 @@ class TagModule extends Ab_Module {
      * Конструктор
      */
     public function __construct(){
-        $this->version = "0.0.1";
+        $this->version = "0.1.0";
         $this->name = "tag";
         $this->permission = new TagPermission($this);
     }
