@@ -50,14 +50,20 @@ class Tag {
         return $ret;
     }
 
+    private static $_fullParser;
+
     public static function TagsParse($tags){
         if (!is_array($tags)){
             return array();
         }
+        if (empty(Tag::$_fullParser)){
+            Tag::$_fullParser = Abricos::TextParser(true);
+        }
         $ret = array();
         $count = min(count($tags), 16);
         for ($i = 0; $i < $count; $i++){
-            $tag = mb_strtolower(trim($tags[$i]), 'UTF-8');
+            $tags[$i] = Tag::$_fullParser->Parser(trim($tags[$i]));
+            $tag = mb_strtolower($tags[$i], 'UTF-8');
             if (strlen($tag) === 0){
                 continue;
             }
