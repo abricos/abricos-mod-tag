@@ -14,7 +14,7 @@ $pfx = $db->prefix;
 
 if ($updateManager->isInstall()){
 
-    Abricos::GetModule('money')->permission->Install();
+    Abricos::GetModule('tag')->permission->Install();
 
     $db->query_write("
 		CREATE TABLE IF NOT EXISTS ".$pfx."tag (
