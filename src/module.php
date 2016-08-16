@@ -41,7 +41,7 @@ class TagAction {
 
 class TagPermission extends Ab_UserPermission {
 
-    public function TagPermission(TagModule $module){
+    public function __construct(TagModule $module){
         $defRoles = array(
             new Ab_UserRole(TagAction::ADMIN, Ab_UserGroup::ADMIN)
         );
@@ -56,5 +56,3 @@ class TagPermission extends Ab_UserPermission {
 }
 
 Abricos::ModuleRegister(new TagModule());
-
-?>

@@ -100,5 +100,3 @@ class TagQuery {
         return $db->query_read($sql);
     }
 }
-
-?>

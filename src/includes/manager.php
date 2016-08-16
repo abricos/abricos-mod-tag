@@ -50,5 +50,3 @@ class TagManager extends Ab_ModuleManager {
     }
 
 }
-
-?>

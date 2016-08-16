@@ -26,5 +26,3 @@ class TagItem extends AbricosModel {
 class TagItemList extends AbricosModelList {
 
 }
-
-?>
